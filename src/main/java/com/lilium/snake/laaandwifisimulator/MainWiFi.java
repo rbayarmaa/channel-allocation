@@ -9,8 +9,8 @@ import java.util.List;
 
 public class MainWiFi {
     public static void main(String[] args) throws IOException {
-        long start = System.currentTimeMillis();//時間計
-        String[] args1 = {"1", "300", "0.0005", "0.0005", "0", "650", "1", "1", "1000", "5", "10", "3", "1"};
+        long start = System.currentTimeMillis();// 時間計
+        String[] args1 = { "1", "300", "0.0005", "0.0005", "0", "650", "1", "1", "1000", "5", "10", "3", "1" };
         MainWiFi wifi = new MainWiFi(new UserParameter(args1));
         wifi.start();
         long end = System.currentTimeMillis();
@@ -52,7 +52,6 @@ public class MainWiFi {
         var state = getObservation();
         System.out.println("hahahahahaha start");
     }
-
 
     public WifiState getObservation() {
 

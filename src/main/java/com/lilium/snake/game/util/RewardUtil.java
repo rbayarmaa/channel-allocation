@@ -13,39 +13,45 @@ import java.util.Arrays;
  */
 public final class RewardUtil {
 
-    private RewardUtil() {}
+    private RewardUtil() {
+    }
 
     /**
      * Used to calculate reward for taken action.
      *
-     * @param action Action that was taken.
+     * @param action        Action that was taken.
      * @param snakePosition Current snake position.
-     * @param foodPosition Current food position.
+     * @param foodPosition  Current food position.
      * @return Returns calculated reward value.
      */
     public static double calculateRewardForActionToTake(final Action action,
-                                                        final Position[] snakePosition,
-                                                        final Position foodPosition) {
+            final Position[] snakePosition,
+            final Position foodPosition) {
         Direction nextDirection = Direction.UP;
         switch (action) {
-            case MOVE_UP -> {}
-            case MOVE_RIGHT -> nextDirection = Direction.RIGHT;
-            case MOVE_DOWN -> nextDirection = Direction.DOWN;
-            case MOVE_LEFT -> nextDirection = Direction.LEFT;
+
+            case MOVE_RIGHT:
+                nextDirection = Direction.RIGHT;
+                break;
+            case MOVE_DOWN:
+                nextDirection = Direction.DOWN;
+                break;
+            case MOVE_LEFT:
+                nextDirection = Direction.LEFT;
+                break;
         }
 
         final Position position = PositionUtil.getNextPosition(
                 snakePosition[0],
-                nextDirection
-        );
+                nextDirection);
 
         return getRewardForPosition(nextDirection, position, snakePosition, foodPosition);
     }
 
     private static double getRewardForPosition(final Direction nextDirection,
-                                               final Position nextPosition,
-                                               final Position[] snakePosition,
-                                               final Position foodPosition) {
+            final Position nextPosition,
+            final Position[] snakePosition,
+            final Position foodPosition) {
         if (nextPosition.isOutsideTheGameBounds() || Arrays.asList(snakePosition).contains(nextPosition)) {
             return -100.0;
         }
