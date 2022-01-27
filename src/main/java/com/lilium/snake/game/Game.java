@@ -1,4 +1,4 @@
-package com.lilium.snake.game;
+getObservationpackage com.lilium.snake.game;
 
 import com.lilium.snake.game.helper.Direction;
 import com.lilium.snake.game.helper.Position;
