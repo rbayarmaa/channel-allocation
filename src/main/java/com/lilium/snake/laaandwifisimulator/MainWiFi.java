@@ -31,13 +31,14 @@ public class MainWiFi {
         initialize();
     }
 
-    public void initialize() {
+    public WifiState initialize() {
         try {
             _scenario = new Scenario(30, _param, _topology);
             _scenario.startSimulation();
         } catch (Exception e) {
             System.out.println("Init hiij chadsangui " + e.getMessage());
         }
+        return getObservation();
     }
 
     public void start() throws IOException {

@@ -29,7 +29,7 @@ public class Environment implements MDP<WifiState, Integer, DiscreteSpace> {
 
     @Override
     public WifiState reset() {
-        return game.initializeGame();
+        return game.initialize();
     }
 
     @Override
