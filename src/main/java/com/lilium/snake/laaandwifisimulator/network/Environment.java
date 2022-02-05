@@ -1,6 +1,6 @@
 package com.lilium.snake.laaandwifisimulator.network;
 
-import com.lilium.snake.laaandwifisimulator.MainWiFi;
+import com.lilium.snake.laaandwifisimulator.Simulator;
 import com.lilium.snake.laaandwifisimulator.WifiState;
 import com.lilium.snake.network.util.NetworkUtil;
 import org.deeplearning4j.gym.StepReply;
@@ -10,16 +10,17 @@ import org.deeplearning4j.rl4j.space.ObservationSpace;
 
 public class Environment implements MDP<WifiState, Integer, DiscreteSpace> {
     // Size is 4 as we have 4 actions
-    private final DiscreteSpace actionSpace = new DiscreteSpace(4);
-    private final MainWiFi game;
+    private final DiscreteSpace actionSpace = new DiscreteSpace(107 * 4);
+    private final Simulator game;
 
-    public Environment(final MainWiFi game) {
+    public Environment(final Simulator game) {
         this.game = game;
     }
 
     @Override
     public ObservationSpace<WifiState> getObservationSpace() {
-        return new GameObservationSpace();
+        // TODO ENd yag yu hiih yostoigoo daraa shiideh heregtei
+        return new WIfiObservationSpace();
     }
 
     @Override
@@ -39,20 +40,21 @@ public class Environment implements MDP<WifiState, Integer, DiscreteSpace> {
     @Override
     public StepReply<WifiState> step(final Integer actionIndex) {
         // Find action based on action index
-        final Action actionToTake = Action.getActionByIndex(actionIndex);
+        final ActionChannel actionToTake = new ActionChannel(actionIndex);
 
         // Change direction based on action and move the snake in that direction
-        game.changeDirection(actionToTake);
+        game.changeChannelOfStation(actionToTake);
         game.move();
 
-        // If you want to see what is the snake doing while training increase this value
+        // If you want to see what is the snake doing while training increase this
+
         NetworkUtil.waitMs(0);
 
         // Get reward
         double reward = game.calculateRewardForActionToTake(actionToTake);
 
         // Get current state
-        final WifiState observation = game.buildStateObservation();
+        final WifiState observation = game.getObservation();
 
         return new StepReply<>(
                 observation,

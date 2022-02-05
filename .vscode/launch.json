@@ -1,35 +1,42 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Launch Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Launch SnakeDl4j",
-            "request": "launch",
-            "mainClass": "com.lilium.snake.SnakeDl4j",
-            "projectName": "deeplearning4j-snake-game"
-        },
-        {
-            "type": "java",
-            "name": "Launch MainWiFi",
-            "request": "launch",
-            "mainClass": "com.lilium.snake.laaandwifisimulator.MainWiFi",
-            "projectName": "deeplearning4j-snake-game"
-        },
-        {
-            "type": "java",
-            "name": "Launch LAAandWiFiSimulator",
-            "request": "launch",
-            "mainClass": "com.lilium.snake.laaandwifisimulator.sumulator.LAAandWiFiSimulator",
-            "projectName": "deeplearning4j-snake-game"
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch ChannelAction",
+      "request": "launch",
+      "mainClass": "com.lilium.snake.laaandwifisimulator.network.ChannelAction",
+      "projectName": "deeplearning4j-snake-game"
+    },
+    {
+      "type": "java",
+      "name": "Launch Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Launch SnakeDl4j",
+      "request": "launch",
+      "mainClass": "com.lilium.snake.SnakeDl4j",
+      "projectName": "deeplearning4j-snake-game"
+    },
+    {
+      "type": "java",
+      "name": "Launch MainWiFi",
+      "request": "launch",
+      "mainClass": "com.lilium.snake.laaandwifisimulator.MainWiFi",
+      "projectName": "deeplearning4j-snake-game"
+    },
+    {
+      "type": "java",
+      "name": "Launch LAAandWiFiSimulator",
+      "request": "launch",
+      "mainClass": "com.lilium.snake.laaandwifisimulator.sumulator.LAAandWiFiSimulator",
+      "projectName": "deeplearning4j-snake-game"
+    }
+  ]
 }

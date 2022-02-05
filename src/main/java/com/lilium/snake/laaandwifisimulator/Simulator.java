@@ -1,5 +1,6 @@
 package com.lilium.snake.laaandwifisimulator;
 
+import com.lilium.snake.laaandwifisimulator.network.ActionChannel;
 import com.lilium.snake.laaandwifisimulator.sumulator.*;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -20,6 +21,10 @@ public class Simulator {
         Constants.SERVICE_SET = _param.service_set;
         Constants.are = _param.wifi_user_lambda + "";
         initialize();
+    }
+
+    public void changeChannelOfStation(ActionChannel action) {
+        // TODO change Channel of AccessPoint
     }
 
     public WifiState initialize() {

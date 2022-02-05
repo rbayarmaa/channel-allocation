@@ -124,7 +124,7 @@ public abstract class AccessPoint {
         ret.add((double) this.located_area_id);
         ret.add((double) this.assigned_channel);
         ret.add((double) this.user_throughput);
-        ret.add((double) this.max_capacity);
+        // ret.add((double) this.max_capacity);
         Double[] overlay = new Double[Constants.WiFi_NUM + Constants.LTEU_NUM];
         Arrays.fill(overlay, 0.0);
         for (int i = 0; i < overray_list.size(); i++) {
