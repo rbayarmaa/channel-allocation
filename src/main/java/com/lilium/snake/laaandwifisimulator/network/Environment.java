@@ -43,15 +43,7 @@ public class Environment implements MDP<WifiState, Integer, DiscreteSpace> {
         final ActionChannel actionToTake = new ActionChannel(actionIndex);
 
         // Change direction based on action and move the snake in that direction
-        game.changeChannelOfStation(actionToTake);
-        game.move();
-
-        // If you want to see what is the snake doing while training increase this
-
-        NetworkUtil.waitMs(0);
-
-        // Get reward
-        double reward = game.calculateRewardForActionToTake(actionToTake);
+        double reward = game.changeChannelOfStation(actionToTake);
 
         // Get current state
         final WifiState observation = game.getObservation();
@@ -70,7 +62,7 @@ public class Environment implements MDP<WifiState, Integer, DiscreteSpace> {
 
     @Override
     public MDP<WifiState, Integer, DiscreteSpace> newInstance() {
-        game.initializeGame();
+        game.initialize();
         return new Environment(game);
     }
 }

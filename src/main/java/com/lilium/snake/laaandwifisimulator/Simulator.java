@@ -12,6 +12,7 @@ public class Simulator {
     private UserParameter _param;
     private AreaTopology _topology;
     private Scenario _scenario;
+    private int acctionCounter;
 
     public Simulator(UserParameter param) {
         _param = param;
@@ -23,18 +24,27 @@ public class Simulator {
         initialize();
     }
 
-    public void changeChannelOfStation(ActionChannel action) {
-        // TODO change Channel of AccessPoint
-    }
-
     public WifiState initialize() {
+        acctionCounter = 0;
         try {
             _scenario = new Scenario(30, _param, _topology);
-            _scenario.startSimulation();
+            _scenario.startSimulationDQN(null);
         } catch (Exception e) {
             System.out.println("Init hiij chadsangui " + e.getMessage());
         }
         return getObservation();
+    }
+
+    public double changeChannelOfStation(ActionChannel action) {
+        acctionCounter++;
+        try {
+            _scenario.startSimulationDQN(action);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return _scenario.getData().ave_throughput;
     }
 
     public WifiState getObservation() {
@@ -50,5 +60,9 @@ public class Simulator {
         var ss = state.toArray(new Double[0]);
 
         return new WifiState(ArrayUtils.toPrimitive(ss));
+    }
+
+    public boolean isOngoing() {
+        return acctionCounter > 500;
     }
 }

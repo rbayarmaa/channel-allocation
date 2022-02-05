@@ -30,9 +30,11 @@ public class CheckInterference {
         LinkedList<Integer> interference_aps_list = new LinkedList<>();
         for (int i = 0; i < _wifi_ap[wifi_ap_id].overray_list.size(); i++) {
             overray_ap_id = _wifi_ap[wifi_ap_id].overray_list.get(i);
-            if (overray_ap_id < 10000 && (_wifi_ap[overray_ap_id].assigned_channel == _wifi_ap[wifi_ap_id].assigned_channel)) {
+            if (overray_ap_id < 10000
+                    && (_wifi_ap[overray_ap_id].assigned_channel == _wifi_ap[wifi_ap_id].assigned_channel)) {
                 interference_aps_list.add(overray_ap_id);
-            } else if (overray_ap_id >= 10000 && (_lteu_bs[overray_ap_id - 10000].assigned_channel == _wifi_ap[wifi_ap_id].assigned_channel)) {
+            } else if (overray_ap_id >= 10000
+                    && (_lteu_bs[overray_ap_id - 10000].assigned_channel == _wifi_ap[wifi_ap_id].assigned_channel)) {
                 interference_aps_list.add(overray_ap_id);
             }
         }
@@ -45,9 +47,11 @@ public class CheckInterference {
         LinkedList<Integer> interference_aps_list = new LinkedList<>();
         for (int i = 0; i < _lteu_bs[lteu_bs_id].overray_list.size(); i++) {
             overray_ap_id = _lteu_bs[lteu_bs_id].overray_list.get(i);
-            if (overray_ap_id < 10000 && (_wifi_ap[overray_ap_id].assigned_channel == _lteu_bs[lteu_bs_id].assigned_channel)) {
+            if (overray_ap_id < 10000
+                    && (_wifi_ap[overray_ap_id].assigned_channel == _lteu_bs[lteu_bs_id].assigned_channel)) {
                 interference_aps_list.add(overray_ap_id);
-            } else if (overray_ap_id >= 10000 && (_lteu_bs[overray_ap_id].assigned_channel == _lteu_bs[lteu_bs_id].assigned_channel)) {
+            } else if (overray_ap_id >= 10000
+                    && (_lteu_bs[overray_ap_id].assigned_channel == _lteu_bs[lteu_bs_id].assigned_channel)) {
                 interference_aps_list.add(overray_ap_id);
             }
         }
@@ -55,14 +59,16 @@ public class CheckInterference {
     }
 
     /* 対象のWiFi APが干渉しているAPのリストを取得する:アルゴリズム用 */
-    public LinkedList WiFiCheck(int wifi_ap_id, WiFiAP[] wifiap, LTEUBS[] lteubs) {
+    public LinkedList<Integer> WiFiCheck(int wifi_ap_id, WiFiAP[] wifiap, LTEUBS[] lteubs) {
         int overray_ap_id;
         LinkedList<Integer> interference_aps_list = new LinkedList<>();
         for (int i = 0; i < wifiap[wifi_ap_id].overray_list.size(); i++) {
             overray_ap_id = wifiap[wifi_ap_id].overray_list.get(i);
-            if (overray_ap_id < 10000 && (wifiap[overray_ap_id].assigned_channel == wifiap[wifi_ap_id].assigned_channel)) {
+            if (overray_ap_id < 10000
+                    && (wifiap[overray_ap_id].assigned_channel == wifiap[wifi_ap_id].assigned_channel)) {
                 interference_aps_list.add(overray_ap_id);
-            } else if (overray_ap_id >= 10000 && (lteubs[overray_ap_id - 10000].assigned_channel == wifiap[wifi_ap_id].assigned_channel)) {
+            } else if (overray_ap_id >= 10000
+                    && (lteubs[overray_ap_id - 10000].assigned_channel == wifiap[wifi_ap_id].assigned_channel)) {
                 interference_aps_list.add(overray_ap_id);
             }
         }
@@ -70,21 +76,23 @@ public class CheckInterference {
     }
 
     /* 対象のLTE-U BSが干渉しているAPのリストを取得する：アルゴリズム用 */
-    public LinkedList LTEUCheck(int lteu_bs_id, WiFiAP[] wifiap, LTEUBS[] lteubs) {
+    public LinkedList<Integer> LTEUCheck(int lteu_bs_id, WiFiAP[] wifiap, LTEUBS[] lteubs) {
         int overray_ap_id;
         LinkedList<Integer> interference_aps_list = new LinkedList<>();
         for (int i = 0; i < lteubs[lteu_bs_id].overray_list.size(); i++) {
             overray_ap_id = lteubs[lteu_bs_id].overray_list.get(i);
-            if (overray_ap_id < 10000 && (wifiap[overray_ap_id].assigned_channel == lteubs[lteu_bs_id].assigned_channel)) {
+            if (overray_ap_id < 10000
+                    && (wifiap[overray_ap_id].assigned_channel == lteubs[lteu_bs_id].assigned_channel)) {
                 interference_aps_list.add(overray_ap_id);
-            } else if (overray_ap_id >= 10000 && (lteubs[overray_ap_id].assigned_channel == lteubs[lteu_bs_id].assigned_channel)) {
+            } else if (overray_ap_id >= 10000
+                    && (lteubs[overray_ap_id].assigned_channel == lteubs[lteu_bs_id].assigned_channel)) {
                 interference_aps_list.add(overray_ap_id);
             }
         }
         return interference_aps_list;
     }
 
-    /*対象のWiFi APについて、どのチャネルがどのくらい干渉しているかを探索し、最小の干渉チャネルを返す */
+    /* 対象のWiFi APについて、どのチャネルがどのくらい干渉しているかを探索し、最小の干渉チャネルを返す */
     public int WiFiLeastInterference(int wifi_ap_id, WiFiAP[] wifiap, LTEUBS[] lteubs) {
         int[] channel_interference = new int[Constants.CHANNEL_NUM];
         int overray_ap_id;
@@ -111,7 +119,7 @@ public class CheckInterference {
         return select_channel;
     }
 
-    /* 対象のLTE-Uについて、どのチャネルがどのくらい干渉しているかを探索し、最小の干渉チャネルを返す*/
+    /* 対象のLTE-Uについて、どのチャネルがどのくらい干渉しているかを探索し、最小の干渉チャネルを返す */
     public int LTEULeastInterference(int lteu_bs_id, WiFiAP[] wifiap, LTEUBS[] lteubs) {
         int[] channel_interference = new int[Constants.CHANNEL_NUM];
         int overray_ap_id;
@@ -138,7 +146,7 @@ public class CheckInterference {
 
     }
 
-    //全く干渉していないチャネルを返す
+    // 全く干渉していないチャネルを返す
     public int WiFiNoInterference(int wifi_ap_id, WiFiAP[] wifiap, LTEUBS[] lteubs) {
         int[] channel_interference = new int[Constants.CHANNEL_NUM];
         int overray_ap_id;

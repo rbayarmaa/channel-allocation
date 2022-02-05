@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
+import com.lilium.snake.laaandwifisimulator.network.ActionChannel;
+
 /**
  * シミュレーションシナリオのクラス
  *
@@ -36,7 +38,31 @@ public class Scenario {
         // createFirstWiFiUserArrivalEvents2();
         // createFirstLTEUUserArrivalEvents2();
         /* 提案手法,比較手法の最初の発生イベント */
-        creatFirstEventOfGenericAlgorithm6();
+        // creatFirstEventOfGenericAlgorithm6();
+        // creatFirstEventOfDQN(actionChannel);
+
+        while (!_queue.isEmpty()) {
+            // イベントキューからイベントを取り出して実行
+            Event sim_event = _queue.pop();
+            sim_event.runEvent();
+            sim_event.finish();
+        }
+        _data.loopEnd();
+    }
+
+    public void startSimulationDQN(ActionChannel actionChannel) throws IOException {
+
+        // 各最小エリアで、WiFiのみユーザ, WiFi + LTEUユーザの最初の発生
+        createFirstWiFiUserArrivalEvents();
+        createFirstLTEUUserArrivalEvents();
+
+        // createFirstWiFiUserArrivalEvents2();
+        // createFirstLTEUUserArrivalEvents2();
+        /* 提案手法,比較手法の最初の発生イベント */
+        // creatFirstEventOfGenericAlgorithm6();
+        if (actionChannel != null) {
+            createFirstEventOfDQN(actionChannel);
+        }
 
         while (!_queue.isEmpty()) {
             // イベントキューからイベントを取り出して実行
@@ -51,9 +77,7 @@ public class Scenario {
     private void createFirstWiFiUserArrivalEvents() {
 
         for (int area = 0; area < Constants.AREA_NUM; area++) {
-
             double time = _queue.getCurrentTime() + Utility.expRand(_param.wifi_user_lambda, _rnd);
-
             UserNode user = new UserNode(area, _queue.getNextNodeID(), time, 0, _area, _queue.getNextWiFiNodeID());
             /* 次のイベントを作成 */
             Event next_event = new EventOfCreateWiFiuser(time, user, this);
@@ -73,6 +97,12 @@ public class Scenario {
             _queue.add(next_event);
 
         }
+    }
+
+    private void createFirstEventOfDQN(ActionChannel actionChannel) {
+        double time = _queue.getCurrentTime() + _param.interval_time;
+        Event next_event = new EventOfDQN(time, this, actionChannel);
+        _queue.add(next_event);
     }
 
     /* LTE-U+WiFiユーザがLTE-Uがあるエリアにのみ到着する場合 (使っていない) */
