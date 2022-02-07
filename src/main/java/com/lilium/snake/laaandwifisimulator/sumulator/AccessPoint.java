@@ -125,27 +125,27 @@ public abstract class AccessPoint {
         ret.add((double) this.assigned_channel);
         ret.add((double) this.user_throughput);
         // ret.add((double) this.max_capacity);
-        Double[] overlay = new Double[Constants.WiFi_NUM + Constants.LTEU_NUM];
-        Arrays.fill(overlay, 0.0);
-        for (int i = 0; i < overray_list.size(); i++) {
-            var item = overray_list.get(i);
-            overlay[item > 9999 ? item - 9900 : item] = 1.0;
-        }
-        ret.addAll(List.of(overlay));
+        // Double[] overlay = new Double[Constants.WiFi_NUM + Constants.LTEU_NUM];
+        // Arrays.fill(overlay, 0.0);
+        // for (int i = 0; i < overray_list.size(); i++) {
+        // var item = overray_list.get(i);
+        // overlay[item > 9999 ? item - 9900 : item] = 1.0;
+        // }
+        // ret.addAll(List.of(overlay));
 
-        Double[] interference = new Double[Constants.WiFi_NUM + Constants.LTEU_NUM];
-        Arrays.fill(interference, 0.0);
-        for (int i = 0; i < interference_list.size(); i++) {
-            var item = interference_list.get(i);
-            interference[item > 9999 ? item - 9900 : item] = 1.0;
-        }
-        ret.addAll(List.of(interference));
+        // Double[] interference = new Double[Constants.WiFi_NUM + Constants.LTEU_NUM];
+        // Arrays.fill(interference, 0.0);
+        // for (int i = 0; i < interference_list.size(); i++) {
+        // var item = interference_list.get(i);
+        // interference[item > 9999 ? item - 9900 : item] = 1.0;
+        // }
+        // ret.addAll(List.of(interference));
 
-        Double[] cover_area = new Double[Constants.AREA_NUM];
-        Arrays.fill(cover_area, 0.0);
-        for (int i = 0; i < cover_area_list.size(); i++)
-            cover_area[cover_area_list.get(i)] = 1.0;
-        ret.addAll(List.of(cover_area));
+        // Double[] cover_area = new Double[Constants.AREA_NUM];
+        // Arrays.fill(cover_area, 0.0);
+        // for (int i = 0; i < cover_area_list.size(); i++)
+        // cover_area[cover_area_list.get(i)] = 1.0;
+        // ret.addAll(List.of(cover_area));
 
         return ret;
     }

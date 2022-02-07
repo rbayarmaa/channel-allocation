@@ -1,4 +1,5 @@
 package com.lilium.snake.network.util;
+
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.rl4j.learning.configuration.QLearningConfiguration;
 import org.deeplearning4j.rl4j.network.configuration.DQNDenseNetworkConfiguration;
@@ -9,7 +10,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Util class containing methods to build the neural network and its configuration.
+ * Util class containing methods to build the neural network and its
+ * configuration.
  *
  * @author mirza
  */
@@ -19,15 +21,18 @@ public final class NetworkUtil {
      */
     public static final int NUMBER_OF_INPUTS = 4;
     /**
-     * Lowest value of the observation (e.g. player will die -1, nothing will happen 0, will move closer to the food 1)
+     * Lowest value of the observation (e.g. player will die -1, nothing will happen
+     * 0, will move closer to the food 1)
      */
     public static final double LOW_VALUE = -1;
     /**
-     * Highest value of the observation (e.g. player will die -1, nothing will happen 0, will move closer to the food 1)
+     * Highest value of the observation (e.g. player will die -1, nothing will
+     * happen 0, will move closer to the food 1)
      */
     public static final double HIGH_VALUE = 1;
 
-    private NetworkUtil() {}
+    private NetworkUtil() {
+    }
 
     public static QLearningConfiguration buildConfig() {
         return QLearningConfiguration.builder()
