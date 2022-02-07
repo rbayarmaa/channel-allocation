@@ -39,6 +39,9 @@ public final class RewardUtil {
             case MOVE_LEFT:
                 nextDirection = Direction.LEFT;
                 break;
+            default:
+                nextDirection = Direction.UP;
+                break;
         }
 
         final Position position = PositionUtil.getNextPosition(

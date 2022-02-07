@@ -5,14 +5,14 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+// import java.util.List;
 
 public class MainWiFi {
     public static void main(String[] args) throws IOException {
         long start = System.currentTimeMillis();// 時間計
         String[] args1 = { "1", "300", "0.0005", "0.0005", "0", "650", "1", "1", "1000", "5", "10", "3", "1" };
         MainWiFi wifi = new MainWiFi(new UserParameter(args1));
-        wifi.start();
+
         long end = System.currentTimeMillis();
         System.out.println("this is END Simulation Time: " + (end - start) + "[ms]");
     }
@@ -28,44 +28,7 @@ public class MainWiFi {
         Constants.CAPACITY_WITH_WIFIS = Utility.SetCapacitySharedWiFi();
         Constants.SERVICE_SET = _param.service_set;
         Constants.are = _param.wifi_user_lambda + "";
-        initialize();
+
     }
 
-    public WifiState initialize() {
-        try {
-            _scenario = new Scenario(30, _param, _topology);
-            _scenario.startSimulation();
-        } catch (Exception e) {
-            System.out.println("Init hiij chadsangui " + e.getMessage());
-        }
-        return getObservation();
-    }
-
-    public void start() throws IOException {
-        var ss = _scenario.getArea().getWiFiAP();
-        int max = 0;
-        for (int i = 0; i < ss.length; i++) {
-            var user = ss[i].getInterference_list().size();
-            if (user > max) {
-                max = user;
-            }
-        }
-        var state = getObservation();
-        System.out.println("hahahahahaha start");
-    }
-
-    public WifiState getObservation() {
-
-        ArrayList<Double> state = new ArrayList<Double>();
-
-        for (var w : _scenario.getArea().getWiFiAP())
-            state.addAll(w.getObservationState());
-
-        for (var w : _scenario.getArea().getLTEUBS())
-            state.addAll(w.getObservationState());
-
-        var ss = state.toArray(new Double[0]);
-
-        return new WifiState(ArrayUtils.toPrimitive(ss));
-    }
 }

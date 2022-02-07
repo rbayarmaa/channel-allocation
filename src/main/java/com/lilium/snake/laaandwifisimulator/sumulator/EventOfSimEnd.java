@@ -27,7 +27,7 @@ public class EventOfSimEnd extends Event {
 
     public void simEnd() {//
 
-        //系内滞在呼の処理は一定時間通信する場合は不必要
+        // 系内滞在呼の処理は一定時間通信する場合は不必要
 
         /* 系内滞在ユーザの処理 */
         List<UserNode> User_List;
@@ -35,7 +35,7 @@ public class EventOfSimEnd extends Event {
         double min_thr_time[] = new double[4];
         double max_thr_time[] = new double[4];
 
-        //WiFiのみユーザの処理
+        // WiFiのみユーザの処理
         double wifi_sum_throughput = 0.0;
         double wifi_sum_transtime = 0.0;
         int wifi_stay_user_num = 0;
@@ -46,7 +46,7 @@ public class EventOfSimEnd extends Event {
         double wifi_max_throughput = 0.0;
         double wifi_max_transtime = 0.0;
 
-        //WiFi + LTE-Uユーザの処理
+        // WiFi + LTE-Uユーザの処理
         double lteu_sum_throughput = 0.0;
         double lteu_sum_transtime = 0.0;
         int lteu_stay_user_num = 0;
@@ -66,7 +66,6 @@ public class EventOfSimEnd extends Event {
             lteu_sum_throughput += thr_time_num[3];
             lteu_sum_transtime += thr_time_num[4];
             lteu_stay_user_num += thr_time_num[5];
-
 
             min_thr_time = minThrTimeNum(User_List);
             if (wifi_min_throughput >= min_thr_time[0]) {
@@ -149,13 +148,14 @@ public class EventOfSimEnd extends Event {
             }
 
         }
-        //シミュレーション終了時にサービスを終了していないユーザの統計(※一定時間通信する場合は使わない)
+        // シミュレーション終了時にサービスを終了していないユーザの統計(※一定時間通信する場合は使わない)
         _scenario.getData().updateNotEndUser(wifi_sum_throughput, lteu_sum_throughput, wifi_sum_transtime,
                 lteu_sum_transtime, wifi_stay_user_num, lteu_stay_user_num);
 
-        _scenario.getData().updateNotEndUseMin(wifi_min_throughput, lteu_min_throughput, wifi_min_transtime, lteu_min_transtime);
+        _scenario.getData().updateNotEndUseMin(wifi_min_throughput, lteu_min_throughput, wifi_min_transtime,
+                lteu_min_transtime);
 
-        /* シミュレーションの終了時刻  */
+        /* シミュレーションの終了時刻 */
         _scenario.getData().updateEndTime(_queue.getCurrentTime());
 
         /* イベントキューを空に */
@@ -177,27 +177,30 @@ public class EventOfSimEnd extends Event {
         ite = list.listIterator();
         UserNode user = null;
 
-        if (_param.end_condition == 1) {/*終了条件が時間*/
+        if (_param.end_condition == 1) {/* 終了条件が時間 */
 
         } else {/* 終了条件が呼数 */
             while (ite.hasNext()) {
                 user = ite.next();
                 if (user.user_set == 0) {
-                    if (user.wifi_node_id < _param.end_num + Constants.STEADY_NUM && user.wifi_node_id >= Constants.STEADY_NUM) {//System.out.println("oi"+ user.wifi_node_id);
+                    if (user.wifi_node_id < _param.end_num + Constants.STEADY_NUM
+                            && user.wifi_node_id >= Constants.STEADY_NUM) {// System.out.println("oi"+
+                                                                           // user.wifi_node_id);
                         wifi_sum_thr += user.getAverageThroughput(event_time);
                         wifi_sum_trans += user.getTransTime(event_time);
                         wifi_num++;
                     }
 
                 } else {
-                    if (user.lteu_node_id < _param.end_num + Constants.STEADY_NUM && user.lteu_node_id >= Constants.STEADY_NUM) {//System.out.println("oioi"+user.lteu_node_id);                        
+                    if (user.lteu_node_id < _param.end_num + Constants.STEADY_NUM
+                            && user.lteu_node_id >= Constants.STEADY_NUM) {// System.out.println("oioi"+user.lteu_node_id);
                         lteu_sum_thr += user.getAverageThroughput(event_time);
                         lteu_sum_trans += user.getTransTime(event_time);
                         lteu_num++;
                     }
                 }
             }
-        }   //System.out.println(wifi_num + "\t" + lteu_num);
+        } // System.out.println(wifi_num + "\t" + lteu_num);
         double thr_time_num[] = new double[6];
         thr_time_num[0] = wifi_sum_thr;
         thr_time_num[1] = wifi_sum_trans;
@@ -222,13 +225,15 @@ public class EventOfSimEnd extends Event {
         ite = list.listIterator();
         UserNode user = null;
 
-        if (_param.end_condition == 1) {/*終了条件が時間*/
+        if (_param.end_condition == 1) {/* 終了条件が時間 */
 
         } else {/* 終了条件が呼数 */
             while (ite.hasNext()) {
                 user = ite.next();
                 if (user.user_set == 0) {
-                    if (user.wifi_node_id < _param.end_num + Constants.STEADY_NUM && user.wifi_node_id >= Constants.STEADY_NUM) {//System.out.println("oi"+ user.wifi_node_id);
+                    if (user.wifi_node_id < _param.end_num + Constants.STEADY_NUM
+                            && user.wifi_node_id >= Constants.STEADY_NUM) {// System.out.println("oi"+
+                                                                           // user.wifi_node_id);
                         if (wifi_min_thr >= user.getAverageThroughput(event_time)) {
                             wifi_min_thr = user.getAverageThroughput(event_time);
                         }
@@ -239,7 +244,8 @@ public class EventOfSimEnd extends Event {
                     }
 
                 } else {
-                    if (user.lteu_node_id < _param.end_num + Constants.STEADY_NUM && user.lteu_node_id >= Constants.STEADY_NUM) {//System.out.println("oioi"+user.lteu_node_id);                        
+                    if (user.lteu_node_id < _param.end_num + Constants.STEADY_NUM
+                            && user.lteu_node_id >= Constants.STEADY_NUM) {// System.out.println("oioi"+user.lteu_node_id);
                         if (lteu_min_thr >= user.getAverageThroughput(event_time)) {
                             lteu_min_thr = user.getAverageThroughput(event_time);
                         }
@@ -250,7 +256,7 @@ public class EventOfSimEnd extends Event {
                     }
                 }
             }
-        }   //System.out.println(wifi_num + "\t" + lteu_num);
+        } // System.out.println(wifi_num + "\t" + lteu_num);
 
         double thr_time_num[] = new double[4];
         thr_time_num[0] = wifi_min_thr;
@@ -274,13 +280,15 @@ public class EventOfSimEnd extends Event {
         ite = list.listIterator();
         UserNode user = null;
 
-        if (_param.end_condition == 1) {/*終了条件が時間*/
+        if (_param.end_condition == 1) {/* 終了条件が時間 */
 
         } else {/* 終了条件が呼数 */
             while (ite.hasNext()) {
                 user = ite.next();
                 if (user.user_set == 0) {
-                    if (user.wifi_node_id < _param.end_num + Constants.STEADY_NUM && user.wifi_node_id >= Constants.STEADY_NUM) {//System.out.println("oi"+ user.wifi_node_id);
+                    if (user.wifi_node_id < _param.end_num + Constants.STEADY_NUM
+                            && user.wifi_node_id >= Constants.STEADY_NUM) {// System.out.println("oi"+
+                                                                           // user.wifi_node_id);
                         if (wifi_max_thr <= user.getAverageThroughput(event_time)) {
                             wifi_max_thr = user.getAverageThroughput(event_time);
                         }
@@ -291,7 +299,8 @@ public class EventOfSimEnd extends Event {
                     }
 
                 } else {
-                    if (user.lteu_node_id < _param.end_num + Constants.STEADY_NUM && user.lteu_node_id >= Constants.STEADY_NUM) {//System.out.println("oioi"+user.lteu_node_id);                        
+                    if (user.lteu_node_id < _param.end_num + Constants.STEADY_NUM
+                            && user.lteu_node_id >= Constants.STEADY_NUM) {// System.out.println("oioi"+user.lteu_node_id);
                         if (lteu_max_thr <= user.getAverageThroughput(event_time)) {
                             lteu_max_thr = user.getAverageThroughput(event_time);
                         }
@@ -302,7 +311,7 @@ public class EventOfSimEnd extends Event {
                     }
                 }
             }
-        }   //System.out.println(wifi_num + "\t" + lteu_num);
+        } // System.out.println(wifi_num + "\t" + lteu_num);
 
         double thr_time_num[] = new double[4];
         thr_time_num[0] = wifi_max_thr;
