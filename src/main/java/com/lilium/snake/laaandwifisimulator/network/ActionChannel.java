@@ -7,7 +7,7 @@ public class ActionChannel {
     public int channel;
     public boolean isWifi;
 
-    ActionChannel(int action) {
+    public ActionChannel(int action) {
         this.id = (action / 4);
 
         isWifi = this.id <= Constants.WiFi_NUM;

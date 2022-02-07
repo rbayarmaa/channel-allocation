@@ -40,7 +40,7 @@ public class Simulator {
         try {
             _scenario.startSimulationDQN(action);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
 
