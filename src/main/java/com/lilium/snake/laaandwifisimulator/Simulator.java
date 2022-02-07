@@ -63,6 +63,6 @@ public class Simulator {
     }
 
     public boolean isOngoing() {
-        return acctionCounter > 500;
+        return acctionCounter < 500;
     }
 }

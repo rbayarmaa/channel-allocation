@@ -9,6 +9,8 @@ import org.nd4j.linalg.learning.config.RmsProp;
 import java.io.File;
 import java.io.IOException;
 
+import com.lilium.snake.laaandwifisimulator.sumulator.Constants;
+
 /**
  * Util class containing methods to build the neural network and its
  * configuration.
@@ -19,17 +21,7 @@ public final class WiFiNetworkUtil {
     /**
      * Number of neural network inputs.
      */
-    public static final int NUMBER_OF_INPUTS = 4;
-    /**
-     * Lowest value of the observation (e.g. player will die -1, nothing will happen
-     * 0, will move closer to the food 1)
-     */
-    public static final double LOW_VALUE = -1;
-    /**
-     * Highest value of the observation (e.g. player will die -1, nothing will
-     * happen 0, will move closer to the food 1)
-     */
-    public static final double HIGH_VALUE = 1;
+    public static final int NUMBER_OF_INPUTS = (Constants.WiFi_NUM + Constants.LTEU_NUM) * 7;
 
     private WiFiNetworkUtil() {
     }

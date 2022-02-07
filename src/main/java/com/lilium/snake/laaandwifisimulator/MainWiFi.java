@@ -1,7 +1,7 @@
 package com.lilium.snake.laaandwifisimulator;
 
 import com.lilium.snake.laaandwifisimulator.network.ActionChannel;
-import com.lilium.snake.laaandwifisimulator.network.Environment;
+import com.lilium.snake.laaandwifisimulator.network.WifiEnvironment;
 import com.lilium.snake.laaandwifisimulator.network.WiFiNetworkUtil;
 import com.lilium.snake.laaandwifisimulator.sumulator.*;
 import com.lilium.snake.network.util.GameStateUtil;
@@ -30,13 +30,29 @@ public class MainWiFi {
     final Simulator game;
 
     public MainWiFi() {
-        String[] args1 = { "1", "300", "0.0005", "0.0005", "0", "650", "1", "1", "1000", "5", "10", "3", "1" };
+        String[] args1 = {
+                "1", // loop_num -> 0: Count of for
+                "300", // interval_time -> 1:Frequency allocation interval (GA execution interval)
+                "0.0005", // wifi_user_lambda -> 2:WiFi only user arrival rate
+                "0.0005", // lteu_user_lambda -> 3: Arrival rate of WiFi + LTE-U users
+                "0", // end_condition -> 4: Selection of simulation end condition (0: number of
+                     // calls, 1: time)
+                "650", // end_num -> 5: Number of calls or time that is the end condition
+                "1", // service_set -> 6: User usage (0: file download, 1: fixed time communication)
+                "1", // select_method -> 7: Selection of proposed method, etc.
+                "1000", // ga_loop_num -> 8: GA loop count
+                "5", // mutation_prob -> 9: Mutation probability
+                "10", // ga_individual_num -> 10: GA population
+                "3", // crossover_parent_num -> 11: Number of pairs of parents at the time of
+                     // crossover
+                "1" // elite_num -> 12: Number to select in elite selection
+        };
         game = new Simulator(new UserParameter(args1));
 
         final String randomNetworkName = "network-" + System.currentTimeMillis() + ".zip";
 
         // Create our training environment
-        final Environment mdp = new Environment(game);
+        final WifiEnvironment mdp = new WifiEnvironment(game);
         final QLearningDiscreteDense<WifiState> dql = new QLearningDiscreteDense<>(
                 mdp,
                 WiFiNetworkUtil.buildDQNFactory(),

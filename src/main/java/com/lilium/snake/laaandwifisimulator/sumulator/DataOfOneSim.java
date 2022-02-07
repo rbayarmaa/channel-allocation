@@ -19,22 +19,21 @@ public class DataOfOneSim {
     /* Network-wide statistics */
     public double ave_throughput;
     public double ave_transtime;
-    public int target_end_num; //サービスを終了
+    public int target_end_num; // サービスを終了
     public int target_connected_num;
     public double end_time;
-    public double sim_start_time; //シミュレーション開始時間(統計対象から)
-
+    public double sim_start_time; // シミュレーション開始時間(統計対象から)
 
     /* WiFi only user statistics */
     public double ave_throughput_wifi;
     public double ave_transtime_wifi;
-    public int target_wifi_end_num; //Number of users only for wifi that ended the service
+    public int target_wifi_end_num; // Number of users only for wifi that ended the service
     public int target_wifi_connected_num;
 
     /* WiFi + LTE-U user statistics */
     public double ave_throughput_lteu;
     public double ave_transtime_lteu;
-    public int target_lteu_end_num; //サービスを終了したwifi+lteuユーザ数
+    public int target_lteu_end_num; // サービスを終了したwifi+lteuユーザ数
     public int target_lteu_connected_num;
 
     /* Save minimum */
@@ -53,12 +52,12 @@ public class DataOfOneSim {
     public double max_lteu_throughput;
     public double max_lteu_trans_time;
 
-    /* When communicating for a certain period of time*/
+    /* When communicating for a certain period of time */
     public double avg_provided_data_size;
     public double avg_provided_data_size_wifi;
     public double avg_provided_data_size_lteu;
 
-    /* Dispersion of throughput fluctuations during user communication*/
+    /* Dispersion of throughput fluctuations during user communication */
     public double variance_per_user;
     public double variance_per_user_wifi;
     public double variance_per_user_lteu;
@@ -68,11 +67,11 @@ public class DataOfOneSim {
     public double variance_wifi;
     public double variance_lteu;
 
-    //Record throughput for each user
+    // Record throughput for each user
     public final double[] wifi_users_throghput;
     public final double[] lteu_users_throghput;
 
-    //Record minimum throughput per user
+    // Record minimum throughput per user
     public final double[] wifi_users_min_throghput;
     public final double[] lteu_users_min_throghput;
 
@@ -100,7 +99,7 @@ public class DataOfOneSim {
     public double non_user_time_wifi;
     public double non_user_time_lteu;
 
-    //fairness index
+    // fairness index
     public double fairness_index_avg;
     public double fairness_index_avg_wifi;
     public double fairness_index_avg_lteu;
@@ -116,15 +115,14 @@ public class DataOfOneSim {
     public double thr_2_jo_min;
     public double thr_2_jo_min_wifi;
     public double thr_2_jo_min_lteu;
-    public int lte_num; //Number of LTE + WiFi users connected to LTE
-    public int wifi_num; //LTE + WiFi ユーザのうち、WiFiに接続したユーザ数
-
+    public int lte_num; // Number of LTE + WiFi users connected to LTE
+    public int wifi_num; // LTE + WiFi ユーザのうち、WiFiに接続したユーザ数
 
     /* Update of statistical information at the end of the target user */
     public int updateTargetUser(UserNode user) throws IOException {
         target_end_num++;
 
-        if (target_end_num == 1) {//Record of the first user (record of the start of simulation))
+        if (target_end_num == 1) {// Record of the first user (record of the start of simulation))
             sim_start_time = user.getEndTime() - user.getTransTime();
             previous_min_time = sim_start_time;
             previous_min_time_wifi = sim_start_time;
@@ -137,14 +135,15 @@ public class DataOfOneSim {
             target_lteu_end_num++;
         }
 
-        //Output for confirmation
+        // Output for confirmation
         if (target_end_num % 50000 == 0) {
-            System.out.println(target_end_num + " users ended. -> " + "wifi: " + target_wifi_end_num + " lte-u: " + target_lteu_end_num);
+            System.out.println(target_end_num + " users ended. -> " + "wifi: " + target_wifi_end_num + " lte-u: "
+                    + target_lteu_end_num);
         }
 
         int sum = 0;
         double temp_variance = 0.0;
-        //Variance calculation process
+        // Variance calculation process
         for (int i = 0; i < user.getThroughputs().size(); i++) {
             sum += (double) user.getThroughputs().get(i);
         }
@@ -152,21 +151,22 @@ public class DataOfOneSim {
         sum = sum / user.getThroughputs().size();
 
         for (int i = 0; i < user.getThroughputs().size(); i++) {
-            temp_variance += ((double) user.getThroughputs().get(i) - sum) * ((double) user.getThroughputs().get(i) - sum);
+            temp_variance += ((double) user.getThroughputs().get(i) - sum)
+                    * ((double) user.getThroughputs().get(i) - sum);
         }
         temp_variance = temp_variance / user.getThroughputs().size();
         variance_per_user += temp_variance;
-        //Completion of variance calculation process
+        // Completion of variance calculation process
 
         if (Constants.SERVICE_SET == 0) {
 
-            //Processing of all users
+            // Processing of all users
             target_connected_num++;
 
             ave_throughput += user.getAverageThroughput();
             ave_transtime += user.getTransTime();
 
-            //Minimum value processing
+            // Minimum value processing
             if (min_throughput >= user.getAverageThroughput()) {
                 min_throughput = user.getAverageThroughput();
             }
@@ -175,7 +175,7 @@ public class DataOfOneSim {
                 min_trans_time = user.getTransTime();
             }
 
-            //Maximum value processing
+            // Maximum value processing
             if (max_throughput <= user.getAverageThroughput()) {
                 max_throughput = user.getAverageThroughput();
             }
@@ -184,8 +184,8 @@ public class DataOfOneSim {
                 max_trans_time = user.getTransTime();
             }
 
-            //Processing for WiFi only users or WiFi + LTE-U BS users
-            if (user.user_set == 0) {//WiFi only user processing
+            // Processing for WiFi only users or WiFi + LTE-U BS users
+            if (user.user_set == 0) {// WiFi only user processing
 
                 wifi_users_throghput[target_wifi_connected_num] = user.getAverageThroughput();
 
@@ -212,7 +212,7 @@ public class DataOfOneSim {
 
                 variance_per_user_wifi += temp_variance;
 
-            } else {//WiFi + LTE-U only User processing
+            } else {// WiFi + LTE-U only User processing
 
                 lteu_users_throghput[target_lteu_connected_num] = user.getAverageThroughput();
 
@@ -243,18 +243,19 @@ public class DataOfOneSim {
                 lte_wifi_num_count(user);
             }
 
-        } else {//Statistical processing when communicating for a certain period of time
-            //Overall processing
+        } else {// Statistical processing when communicating for a certain period of time
+            // Overall processing
             ave_throughput += user.getAverageThroughput2();
             ave_transtime += user.getTransTime();
             avg_provided_data_size += user.getProvidedDataSize();
 
             thr_2_jo_avg += Math.pow(user.getAverageThroughput2(), 2);
 
-//            min_thr_time_avg += user.getMinThroghputTimeAverage();
+            // min_thr_time_avg += user.getMinThroghputTimeAverage();
             target_connected_num++;
 
-            //The minimum throughput returns the smallest throughput obtained by the user ⇒ it is the smallest among the users
+            // The minimum throughput returns the smallest throughput obtained by the user ⇒
+            // it is the smallest among the users
             if (min_throughput >= user.getMinThroughput()) {
                 min_throughput = user.getMinThroughput();
 
@@ -267,7 +268,7 @@ public class DataOfOneSim {
             thr_2_jo_min += Math.pow(user.getMinThroughput(), 2);
             fairness_index_min += user.getMinThroughput();
 
-            if (user.user_set == 0) {//WiFi only user processing
+            if (user.user_set == 0) {// WiFi only user processing
 
                 wifi_users_throghput[target_wifi_connected_num] = user.getAverageThroughput2();
 
@@ -276,9 +277,10 @@ public class DataOfOneSim {
                 thr_2_jo_min_wifi += Math.pow(user.getMinThroughput(), 2);
                 fairness_index_min_wifi += user.getMinThroughput();
 
-                //  wifi_users_min_time_throghput[target_wifi_connected_num] = user.getMinThroghputTimeAverage();
+                // wifi_users_min_time_throghput[target_wifi_connected_num] =
+                // user.getMinThroghputTimeAverage();
 
-//                min_thr_time_avg_wifi += user.getMinThroghputTimeAverage();
+                // min_thr_time_avg_wifi += user.getMinThroghputTimeAverage();
                 target_wifi_connected_num++;
 
                 ave_throughput_wifi += user.getAverageThroughput2();
@@ -306,9 +308,10 @@ public class DataOfOneSim {
                 thr_2_jo_min_lteu += Math.pow(user.getMinThroughput(), 2);
                 fairness_index_min_lteu += user.getMinThroughput();
 
-                // lteu_users_min_time_throghput[target_lteu_connected_num] = user.getMinThroghputTimeAverage();
+                // lteu_users_min_time_throghput[target_lteu_connected_num] =
+                // user.getMinThroghputTimeAverage();
 
-//                min_thr_time_avg_lteu += user.getMinThroghputTimeAverage();
+                // min_thr_time_avg_lteu += user.getMinThroghputTimeAverage();
                 target_lteu_connected_num++;
 
                 ave_throughput_lteu += user.getAverageThroughput2();
@@ -327,7 +330,7 @@ public class DataOfOneSim {
 
                 variance_per_user_lteu += temp_variance;
 
-                /* Record which LTEL WiFi user was connected to*/
+                /* Record which LTEL WiFi user was connected to */
                 lte_wifi_num_count(user);
 
             }
@@ -342,27 +345,27 @@ public class DataOfOneSim {
 
     /* Processing of users staying in the system at the end of simulation */
     public void updateNotEndUser(double wifi_sum_throughput, double lteu_sum_throughput, double wifi_sum_transtime,
-                                 double lteu_sum_transtime, int wifi_stay_user_num, int lteu_stay_user_num) {
-        //The entire network
+            double lteu_sum_transtime, int wifi_stay_user_num, int lteu_stay_user_num) {
+        // The entire network
         ave_throughput += (wifi_sum_throughput + lteu_sum_throughput);
         ave_transtime += (wifi_sum_transtime + lteu_sum_transtime);
         target_connected_num += (wifi_stay_user_num + lteu_stay_user_num);
 
-        //WiFi only users
+        // WiFi only users
         ave_throughput_wifi += wifi_sum_throughput;
         ave_transtime_wifi += wifi_sum_transtime;
         target_wifi_connected_num += wifi_stay_user_num;
 
-        //WiFi + LTE-Uユーザ
+        // WiFi + LTE-Uユーザ
         ave_throughput_lteu += lteu_sum_throughput;
         ave_transtime_lteu += lteu_sum_transtime;
         target_lteu_connected_num += lteu_stay_user_num;
     }
 
-    /* Processing of users staying in the system at the end of simulation*/
+    /* Processing of users staying in the system at the end of simulation */
     public void updateNotEndUseMin(double wifi_min_throughput, double lteu_min_throughput, double wifi_min_transtime,
-                                   double lteu_min_transtime) {
-        //The entire network
+            double lteu_min_transtime) {
+        // The entire network
 
         if (min_throughput >= wifi_min_throughput) {
             min_throughput = wifi_min_throughput;
@@ -380,7 +383,7 @@ public class DataOfOneSim {
             min_trans_time = lteu_min_transtime;
         }
 
-        //WiFi only users
+        // WiFi only users
         if (min_wifi_throughput >= wifi_min_throughput) {
             min_wifi_throughput = wifi_min_throughput;
         }
@@ -389,7 +392,7 @@ public class DataOfOneSim {
             min_wifi_trans_time = wifi_min_transtime;
         }
 
-        //WiFi + LTE-Uユーザ
+        // WiFi + LTE-Uユーザ
         if (min_lteu_throughput >= lteu_min_throughput) {
             min_lteu_throughput = lteu_min_throughput;
         }
@@ -402,8 +405,8 @@ public class DataOfOneSim {
 
     /* Processing of users staying in the system at the end of simulation */
     public void updateNotEndUseMax(double wifi_max_throughput, double lteu_max_throughput, double wifi_max_transtime,
-                                   double lteu_max_transtime) {
-        //The entire network
+            double lteu_max_transtime) {
+        // The entire network
 
         if (max_throughput <= wifi_max_throughput) {
             max_throughput = wifi_max_throughput;
@@ -421,7 +424,7 @@ public class DataOfOneSim {
             max_trans_time = lteu_max_transtime;
         }
 
-        //WiFiのみユーザ       
+        // WiFiのみユーザ
         if (max_wifi_throughput <= wifi_max_throughput) {
             max_wifi_throughput = wifi_max_throughput;
         }
@@ -430,7 +433,7 @@ public class DataOfOneSim {
             max_wifi_trans_time = wifi_max_transtime;
         }
 
-        //WiFi + LTE-Uユーザ
+        // WiFi + LTE-Uユーザ
         if (max_lteu_throughput <= lteu_max_throughput) {
             max_lteu_throughput = lteu_max_throughput;
         }
@@ -481,7 +484,7 @@ public class DataOfOneSim {
 
     }
 
-    public void updateMintimeAverageLTEU(double min_throughput, double time) {//System.out.println(min_throughput);
+    public void updateMintimeAverageLTEU(double min_throughput, double time) {// System.out.println(min_throughput);
         if (sim_start_time > 0) {
 
             if (temp_min_throughput_lteu != 99999) {
@@ -502,27 +505,32 @@ public class DataOfOneSim {
     }
 
     public void lte_wifi_num_count(UserNode un) throws IOException {
-        if (un.getConnectedAP().ap_id < 10000) {
+        // if (un.getConnectedAP().ap_id < 10000) {
 
-            FileWriter fw = new FileWriter("WiFi-224.csv", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            String text;
-            text = wifi_num + "," + un.getConnectedAP().ap_id + "," + un.getConnectedAP().max_capacity + "," + un.getConnectedAP().user_throughput + "," + un.getConnectedAP().assigned_channel +  "," + un.getArea() + "\n"; //un.getConnectedAP().located_area_id_id
+        // FileWriter fw = new FileWriter("WiFi-224.csv", true);
+        // BufferedWriter bw = new BufferedWriter(fw);
+        // String text;
+        // text = wifi_num + "," + un.getConnectedAP().ap_id + "," +
+        // un.getConnectedAP().max_capacity + "," + un.getConnectedAP().user_throughput
+        // + "," + un.getConnectedAP().assigned_channel + "," + un.getArea() + "\n";
+        // //un.getConnectedAP().located_area_id_id
 
-            bw.write(text);
-            bw.close();
-            wifi_num++;
-        } else {
-            FileWriter fw1 = new FileWriter("NRU-224.csv", true);
-            BufferedWriter bw1 = new BufferedWriter(fw1);
-            String text1;
-            text1 = lte_num + "," + un.getConnectedAP().ap_id + "," + un.getConnectedAP().max_capacity + "," + un.getConnectedAP().user_throughput + "," + un.getConnectedAP().assigned_channel + "," + un.getArea() + "\n";
+        // bw.write(text);
+        // bw.close();
+        // wifi_num++;
+        // } else {
+        // FileWriter fw1 = new FileWriter("NRU-224.csv", true);
+        // BufferedWriter bw1 = new BufferedWriter(fw1);
+        // String text1;
+        // text1 = lte_num + "," + un.getConnectedAP().ap_id + "," +
+        // un.getConnectedAP().max_capacity + "," + un.getConnectedAP().user_throughput
+        // + "," + un.getConnectedAP().assigned_channel + "," + un.getArea() + "\n";
 
-            bw1.write(text1);
-            bw1.close();
+        // bw1.write(text1);
+        // bw1.close();
 
-            lte_num++;
-        }
+        // lte_num++;
+        // }
 
     }
 
@@ -549,7 +557,7 @@ public class DataOfOneSim {
         variance_per_user = variance_per_user / target_connected_num;
         variance_per_user_wifi = variance_per_user_wifi / target_wifi_connected_num;
         variance_per_user_lteu = variance_per_user_lteu / target_lteu_connected_num;
-//
+        //
         min_thr_time_avg = min_thr_time_avg / ((end_time - sim_start_time) - non_user_time);
         min_thr_time_avg_wifi = min_thr_time_avg_wifi / ((end_time - sim_start_time) - non_user_time_wifi);
         min_thr_time_avg_lteu = min_thr_time_avg_lteu / ((end_time - sim_start_time) - non_user_time_lteu);
@@ -587,9 +595,11 @@ public class DataOfOneSim {
         variance_lteu = variance_lteu / lteu_users_throghput.length;
 
         fairness_index_min = Math.pow(fairness_index_min, 2) / (target_connected_num * thr_2_jo_min);
-        fairness_index_min_wifi = Math.pow(fairness_index_min_wifi, 2) / (target_wifi_connected_num * thr_2_jo_min_wifi);
-        fairness_index_min_lteu = Math.pow(fairness_index_min_lteu, 2) / (target_lteu_connected_num * thr_2_jo_min_lteu);
-//        System.out.println(wifi_num +"\t"+lte_num);
+        fairness_index_min_wifi = Math.pow(fairness_index_min_wifi, 2)
+                / (target_wifi_connected_num * thr_2_jo_min_wifi);
+        fairness_index_min_lteu = Math.pow(fairness_index_min_lteu, 2)
+                / (target_lteu_connected_num * thr_2_jo_min_lteu);
+        // System.out.println(wifi_num +"\t"+lte_num);
     }
 
     public void updateEndTime(double time) {
