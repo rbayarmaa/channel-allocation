@@ -87,7 +87,7 @@ public class MainWiFi {
                     final INDArray output = multiLayerNetwork.output(state.getMatrix(), false);
                     double[] data = output.data().asDouble();
                     int maxValueIndex = GameStateUtil.getMaxValueIndex(data);
-                    var action = new ActionChannel(maxValueIndex);
+                    var action = ActionChannel.getCurrentAction(maxValueIndex);
 
                     score = game.changeChannelOfStation(action);
 

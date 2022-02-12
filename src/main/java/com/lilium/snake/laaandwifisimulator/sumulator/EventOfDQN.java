@@ -88,6 +88,9 @@ public class EventOfDQN extends Event {
         _area.CopyWiFiAP(_wifi_ap);
 
         _scenario.gettimeMinData(event_time);
+        // _queue.cleanEventQueue();
+        // Event sim_event = new EventOfSimEnd(_scenario);
+        // _queue.add(sim_event);
 
     }
 

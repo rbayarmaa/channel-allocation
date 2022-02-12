@@ -40,7 +40,7 @@ public class WifiEnvironment implements MDP<WifiState, Integer, DiscreteSpace> {
     @Override
     public StepReply<WifiState> step(final Integer actionIndex) {
         // Find action based on action index
-        final ActionChannel actionToTake = new ActionChannel(actionIndex);
+        final ActionChannel actionToTake = ActionChannel.getCurrentAction(actionIndex);
 
         // Change direction based on action and move the snake in that direction
         double reward = game.changeChannelOfStation(actionToTake);

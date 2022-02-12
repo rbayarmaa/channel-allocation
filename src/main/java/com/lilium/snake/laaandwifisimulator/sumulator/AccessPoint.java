@@ -149,4 +149,60 @@ public abstract class AccessPoint {
 
         return ret;
     }
+
+    public int getConnecting_num() {
+        return connecting_num;
+    }
+
+    public void setConnecting_num(int connecting_num) {
+        this.connecting_num = connecting_num;
+    }
+
+    public int getAp_id() {
+        return ap_id;
+    }
+
+    public void setAp_id(int ap_id) {
+        this.ap_id = ap_id;
+    }
+
+    public double getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(double capacity) {
+        this.capacity = capacity;
+    }
+
+    public double getMax_capacity() {
+        return max_capacity;
+    }
+
+    public void setMax_capacity(double max_capacity) {
+        this.max_capacity = max_capacity;
+    }
+
+    public int getLocated_area_id() {
+        return located_area_id;
+    }
+
+    public void setLocated_area_id(int located_area_id) {
+        this.located_area_id = located_area_id;
+    }
+
+    public int getAssigned_channel() {
+        return assigned_channel;
+    }
+
+    public void setAssigned_channel(int assigned_channel) {
+        this.assigned_channel = assigned_channel;
+    }
+
+    public double getUser_throughput() {
+        return user_throughput;
+    }
+
+    public void setUser_throughput(double user_throughput) {
+        this.user_throughput = user_throughput;
+    }
 }

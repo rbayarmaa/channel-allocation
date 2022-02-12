@@ -13,6 +13,7 @@ public class Simulator {
     private AreaTopology _topology;
     private Scenario _scenario;
     private int acctionCounter;
+    private double ave_throughput;
 
     public Simulator(UserParameter param) {
         _param = param;
@@ -29,6 +30,7 @@ public class Simulator {
         try {
             _scenario = new Scenario(30, _param, _topology);
             _scenario.startSimulationDQN(null);
+            ave_throughput = _scenario.getData().ave_throughput;
         } catch (Exception e) {
             System.out.println("Init hiij chadsangui " + e.getMessage());
         }
@@ -43,26 +45,54 @@ public class Simulator {
 
             e.printStackTrace();
         }
-
-        return _scenario.getData().ave_throughput;
+        double tr = _scenario.getData().ave_throughput;
+        if (ave_throughput < tr) {
+            ave_throughput = tr;
+            return ave_throughput * 10000;
+        }
+        if (ave_throughput == tr) {
+            return 0;
+        }
+        return -1;
     }
+
+    private double[] _observation = new double[(Constants.WiFi_NUM + Constants.LTEU_NUM) * 7];
 
     public WifiState getObservation() {
 
-        ArrayList<Double> state = new ArrayList<Double>();
+        for (int i = 0; i < _scenario.getArea().getWiFiAP().length; i++) {
+            int num = i * 7;
+            _observation[num + 0] = _scenario.getArea().getWiFiAP()[i].getAp_id();
+            _observation[num + 1] = _scenario.getArea().getWiFiAP()[i].getConnecting_num();
+            _observation[num + 2] = _scenario.getArea().getWiFiAP()[i].getCapacity();
+            _observation[num + 3] = _scenario.getArea().getWiFiAP()[i].getMax_capacity();
+            _observation[num + 4] = _scenario.getArea().getWiFiAP()[i].getLocated_area_id();
+            _observation[num + 5] = _scenario.getArea().getWiFiAP()[i].getAssigned_channel();
+            _observation[num + 6] = _scenario.getArea().getWiFiAP()[i].getUser_throughput();
+        }
+        for (int i = _scenario.getArea().getWiFiAP().length; i < _scenario.getArea().getWiFiAP().length
+                + _scenario.getArea().getLTEUBS().length; i++) {
+            int num = i * 7;
+            _observation[num + 0] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
+                    .getAp_id();
+            _observation[num + 1] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
+                    .getConnecting_num();
+            _observation[num + 2] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
+                    .getCapacity();
+            _observation[num + 3] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
+                    .getMax_capacity();
+            _observation[num + 4] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
+                    .getLocated_area_id();
+            _observation[num + 5] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
+                    .getAssigned_channel();
+            _observation[num + 6] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
+                    .getUser_throughput();
+        }
 
-        for (var w : _scenario.getArea().getWiFiAP())
-            state.addAll(w.getObservationState());
-
-        for (var w : _scenario.getArea().getLTEUBS())
-            state.addAll(w.getObservationState());
-
-        var ss = state.toArray(new Double[0]);
-
-        return new WifiState(ArrayUtils.toPrimitive(ss));
+        return new WifiState(_observation);
     }
 
     public boolean isOngoing() {
-        return acctionCounter < 500;
+        return acctionCounter < Constants.WiFi_NUM + Constants.LTEU_NUM;
     }
 }
