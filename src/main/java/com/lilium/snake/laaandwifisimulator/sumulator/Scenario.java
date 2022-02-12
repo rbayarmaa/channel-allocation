@@ -58,12 +58,11 @@ public class Scenario {
         // createFirstLTEUUserArrivalEvents2();
         /* 提案手法,比較手法の最初の発生イベント */
         // creatFirstEventOfGenericAlgorithm6();
+
         createFirstWiFiUserArrivalEvents();
         createFirstLTEUUserArrivalEvents();
         if (actionChannel != null) {
             createFirstEventOfDQN(actionChannel);
-        } else {
-
         }
 
         while (!_queue.isEmpty()) {

@@ -28,11 +28,11 @@ public final class WiFiNetworkUtil {
 
     public static QLearningConfiguration buildConfig() {
         return QLearningConfiguration.builder()
-                .seed(123L)
-                .maxEpochStep(200)
+                .seed(428L)
+                .maxEpochStep(Constants.WiFi_NUM + Constants.LTEU_NUM)
                 .maxStep(15000)
                 .expRepMaxSize(150000)
-                .batchSize(128)
+                .batchSize(32)
                 .targetDqnUpdateFreq(500)
                 .updateStart(10)
                 .rewardFactor(0.01)

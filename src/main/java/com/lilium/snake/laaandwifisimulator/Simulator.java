@@ -17,7 +17,7 @@ public class Simulator {
 
     public Simulator(UserParameter param) {
         _param = param;
-        _topology = new AreaTopology();
+
         Constants.CAPACITY_WITH_LAA_WIFI = Utility.SetCapacitySharedWiFiLTEU();
         Constants.CAPACITY_WITH_WIFIS = Utility.SetCapacitySharedWiFi();
         Constants.SERVICE_SET = _param.service_set;
@@ -28,8 +28,8 @@ public class Simulator {
     public WifiState initialize() {
         acctionCounter = 0;
         try {
-            _scenario = new Scenario(30, _param, _topology);
-            _scenario.startSimulationDQN(null);
+            _topology = new AreaTopology();
+            changeChannelOfStation(null);
             ave_throughput = _scenario.getData().ave_throughput;
         } catch (Exception e) {
             System.out.println("Init hiij chadsangui " + e.getMessage());
@@ -38,8 +38,11 @@ public class Simulator {
     }
 
     public double changeChannelOfStation(ActionChannel action) {
+        // if (action != null)
+        // System.out.println(action.id + "," + action.channel);
         acctionCounter++;
         try {
+            _scenario = new Scenario(30, _param, _topology);
             _scenario.startSimulationDQN(action);
         } catch (IOException e) {
 
@@ -48,9 +51,8 @@ public class Simulator {
         double tr = _scenario.getData().ave_throughput;
         if (ave_throughput < tr) {
             ave_throughput = tr;
-            return ave_throughput * 10000;
-        }
-        if (ave_throughput == tr) {
+            return 1;
+        } else if (ave_throughput == tr) {
             return 0;
         }
         return -1;
@@ -93,6 +95,6 @@ public class Simulator {
     }
 
     public boolean isOngoing() {
-        return acctionCounter < Constants.WiFi_NUM + Constants.LTEU_NUM;
+        return acctionCounter < (Constants.WiFi_NUM + Constants.LTEU_NUM) * 4;
     }
 }
