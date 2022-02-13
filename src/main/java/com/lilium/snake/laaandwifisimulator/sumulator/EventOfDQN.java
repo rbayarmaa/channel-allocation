@@ -82,7 +82,7 @@ public class EventOfDQN extends Event {
 
         // ここで、ユーザの接続先選択をする
         // Here, select the user's connection destination
-        // ProposedReConnect(individual);
+        ProposedReConnect(individual);
         // ReConnectNotChange(individual);
 
         _area.CopyLTEUBS(_lteu_bs);

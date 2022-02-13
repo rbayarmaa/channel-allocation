@@ -51,7 +51,7 @@ public class Simulator {
         double tr = _scenario.getData().ave_throughput;
         if (ave_throughput < tr) {
             ave_throughput = tr;
-            return 1;
+            return 10;
         } else if (ave_throughput == tr) {
             return 0;
         }
