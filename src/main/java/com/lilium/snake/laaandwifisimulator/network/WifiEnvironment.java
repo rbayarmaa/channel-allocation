@@ -7,14 +7,21 @@ import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
 import org.deeplearning4j.rl4j.space.DiscreteSpace;
 import org.deeplearning4j.rl4j.space.ObservationSpace;
+import org.nd4j.linalg.factory.Nd4j;
 
 public class WifiEnvironment implements MDP<WifiState, Integer, DiscreteSpace> {
     // Size is 4 as we have 4 actions
-    private final DiscreteSpace actionSpace = new DiscreteSpace((Constants.WiFi_NUM + Constants.LTEU_NUM) * 4);
+
+    private final DiscreteSpace actionSpace;
     private final Simulator game;
 
     public WifiEnvironment(final Simulator game) {
         this.game = game;
+        var rnd = Nd4j.getRandom();
+        var size = ((Constants.WiFi_NUM + Constants.LTEU_NUM) * 4);
+
+        rnd.setSeed(size);
+        actionSpace = new DiscreteSpace(size, rnd);
     }
 
     @Override

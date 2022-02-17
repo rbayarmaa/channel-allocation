@@ -30,6 +30,7 @@ public class Simulator {
         try {
             _topology = new AreaTopology();
             changeChannelOfStation(null);
+            System.out.println("init ave_throughput: " + ave_throughput);
             ave_throughput = _scenario.getData().ave_throughput;
         } catch (Exception e) {
             System.out.println("Init hiij chadsangui " + e.getMessage());
