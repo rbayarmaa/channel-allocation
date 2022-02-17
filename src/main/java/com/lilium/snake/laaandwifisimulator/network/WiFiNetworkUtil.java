@@ -21,7 +21,7 @@ public final class WiFiNetworkUtil {
     /**
      * Number of neural network inputs.
      */
-    public static final int NUMBER_OF_INPUTS = (Constants.WiFi_NUM + Constants.LTEU_NUM) * 7;
+    public static final int NUMBER_OF_INPUTS = ((Constants.WiFi_NUM + Constants.LTEU_NUM) * 7) + 1;
 
     private WiFiNetworkUtil() {
     }
