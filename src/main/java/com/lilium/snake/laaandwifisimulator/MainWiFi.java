@@ -51,7 +51,7 @@ public class MainWiFi {
 
         final String randomNetworkName = "network-" + System.currentTimeMillis() + ".zip";
 
-        // Create our training environment
+        // Create training environment
         final WifiEnvironment mdp = new WifiEnvironment(game);
         final QLearningDiscreteDense<WifiState> dql = new QLearningDiscreteDense<>(
                 mdp,
@@ -79,7 +79,7 @@ public class MainWiFi {
     private void evaluateNetwork(Simulator game, String randomNetworkName) {
         final MultiLayerNetwork multiLayerNetwork = WiFiNetworkUtil.loadNetwork(randomNetworkName);
         double high_score = 0;
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) { //RB:number of iteration (ex, for last iteration: score of iteration '999' was -1.0)
             double score = 0;
             while (game.isOngoing()) {
                 try {

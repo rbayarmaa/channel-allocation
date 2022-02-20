@@ -22,7 +22,9 @@ public final class WiFiNetworkUtil {
      * Number of neural network inputs.
      */
     public static final int NUMBER_OF_INPUTS = (Constants.WiFi_NUM + Constants.LTEU_NUM) * 7;
-
+    /**
+     * end observation-ii max, min utgiig todorhoilj uguh shaardlagagui yu? Jishee ni APID=0 or 107
+     */
     private WiFiNetworkUtil() {
     }
 
@@ -47,7 +49,7 @@ public final class WiFiNetworkUtil {
     public static DQNFactoryStdDense buildDQNFactory() {
         final DQNDenseNetworkConfiguration build = DQNDenseNetworkConfiguration.builder()
                 .l2(0.001)
-                .updater(new RmsProp(0.000025))
+                .updater(new RmsProp(0.00025)) //0.000025 bsan
                 .numHiddenNodes(300)
                 .numLayers(2)
                 .build();

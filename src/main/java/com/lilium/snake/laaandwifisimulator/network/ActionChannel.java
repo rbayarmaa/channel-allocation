@@ -12,6 +12,7 @@ public class ActionChannel {
     }
 
     void setAction(int action) {
+
         this.id = (action / 4);
 
         isWifi = this.id >= (Constants.LTEU_NUM);
@@ -19,7 +20,7 @@ public class ActionChannel {
             id = id - Constants.LTEU_NUM;
         else
             id = id + 10000;
-        this.channel = (action % 4) + 1;
+        this.channel = (action % 4);
     }
 
     private static ActionChannel currentAction = new ActionChannel();
