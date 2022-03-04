@@ -47,6 +47,8 @@ public class Simulator {
         // System.out.println(action.id + "," + action.channel);
         acctionCounter++;
         try {
+            // TODO Make ovservation sesition jisheen observationii utgiic avtionDesitiontei
+            // jil bolgood bugendeerh utgiig uguud sesitioniigni hargah
             _scenario = new Scenario(30, _param, _topology);
             _scenario.startSimulationDQN(action);
         } catch (IOException e) {
