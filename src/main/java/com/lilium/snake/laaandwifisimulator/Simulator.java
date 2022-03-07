@@ -24,14 +24,19 @@ public class Simulator {
         Constants.CAPACITY_WITH_WIFIS = Utility.SetCapacitySharedWiFi();
         Constants.SERVICE_SET = _param.service_set;
         Constants.are = _param.wifi_user_lambda + "";
-        initialize();
+        try {
+            initialize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public WifiState initialize() {
+    public WifiState initialize() throws IOException {
         acctionCounter = 0;
         try {
             _topology = new AreaTopology();
-            changeChannelOfStation(null);
+            _scenario = new Scenario(30, _param, _topology);
+
             System.out.println(
                     "------> init ave_throughput: " + ave_throughput + " max_ave_throughput:" + max_ave_throughput);
             ave_throughput = _scenario.getData().ave_throughput;
@@ -42,7 +47,7 @@ public class Simulator {
         return getObservation();
     }
 
-    public double changeChannelOfStation(ActionChannel action) {
+    public double changeChannelOfStation(int[] action) {
         // if (action != null)
         // System.out.println(action.id + "," + action.channel);
         acctionCounter++;
@@ -70,42 +75,13 @@ public class Simulator {
         return ret;
     }
 
-    public WifiState getObservation() {
-        double[] _observation = new double[WiFiNetworkUtil.NUMBER_OF_INPUTS];
-        _observation[WiFiNetworkUtil.NUMBER_OF_INPUTS - 1] = ave_throughput;
-        for (int i = 0; i < _scenario.getArea().getWiFiAP().length; i++) {
-            int num = i * 4;
-            _observation[num + 0] = _scenario.getArea().getWiFiAP()[i].getAp_id();
-            _observation[num + 1] = _scenario.getArea().getWiFiAP()[i].getConnecting_num();
-            // _observation[num + 2] = _scenario.getArea().getWiFiAP()[i].getCapacity();
-            // _observation[num + 3] = _scenario.getArea().getWiFiAP()[i].getMax_capacity();
-            // _observation[num + 4] =
-            // _scenario.getArea().getWiFiAP()[i].getLocated_area_id();
-            _observation[num + 2] = _scenario.getArea().getWiFiAP()[i].getAssigned_channel();
-            _observation[num + 3] = _scenario.getArea().getWiFiAP()[i].getUser_throughput();
-        }
-        for (int i = _scenario.getArea().getWiFiAP().length; i < _scenario.getArea().getWiFiAP().length
-                + _scenario.getArea().getLTEUBS().length; i++) {
-            int num = i * 4;
-            _observation[num + 0] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
-                    .getAp_id();
-            _observation[num + 1] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
-                    .getConnecting_num();
-            // _observation[num + 2] = _scenario.getArea().getLTEUBS()[i -
-            // _scenario.getArea().getWiFiAP().length]
-            // .getCapacity();
-            // _observation[num + 3] = _scenario.getArea().getLTEUBS()[i -
-            // _scenario.getArea().getWiFiAP().length]
-            // .getMax_capacity();
-            // _observation[num + 4] = _scenario.getArea().getLTEUBS()[i -
-            // _scenario.getArea().getWiFiAP().length]
-            // .getLocated_area_id();
-            _observation[num + 2] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
-                    .getAssigned_channel();
-            _observation[num + 3] = _scenario.getArea().getLTEUBS()[i - _scenario.getArea().getWiFiAP().length]
-                    .getUser_throughput();
-        }
+    public WifiState getObservation() throws IOException {
+        double[] _observation = new double[(Constants.WiFi_NUM + Constants.LTEU_NUM) * 4];
 
+        for (int i = 0; i < ((Constants.WiFi_NUM + Constants.LTEU_NUM) * 4); i++) {
+            _scenario.startSimulationDQN(ActionChannel.getCurrentAction(i));
+            _observation[i] = _scenario.getData().ave_throughput;
+        }
         return new WifiState(_observation);
     }
 

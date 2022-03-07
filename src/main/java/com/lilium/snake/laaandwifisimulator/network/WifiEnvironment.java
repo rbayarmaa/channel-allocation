@@ -1,18 +1,19 @@
 package com.lilium.snake.laaandwifisimulator.network;
 
+import java.io.IOException;
+
 import com.lilium.snake.laaandwifisimulator.Simulator;
 import com.lilium.snake.laaandwifisimulator.WifiState;
 import com.lilium.snake.laaandwifisimulator.sumulator.Constants;
 import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
-import org.deeplearning4j.rl4j.space.DiscreteSpace;
 import org.deeplearning4j.rl4j.space.ObservationSpace;
 import org.nd4j.linalg.factory.Nd4j;
 
-public class WifiEnvironment implements MDP<WifiState, Integer, DiscreteSpace> {
+public class WifiEnvironment implements MDP<WifiState, int[], CustomActionSpace> {
     // Size is 4 as we have 4 actions
 
-    private final DiscreteSpace actionSpace;
+    private final CustomActionSpace actionSpace;
     private final Simulator game;
 
     public WifiEnvironment(final Simulator game) {
@@ -21,7 +22,7 @@ public class WifiEnvironment implements MDP<WifiState, Integer, DiscreteSpace> {
         var size = ((Constants.WiFi_NUM + Constants.LTEU_NUM) * 4);
 
         rnd.setSeed(size);
-        actionSpace = new DiscreteSpace(size, rnd);
+        actionSpace = new CustomActionSpace();
     }
 
     @Override
@@ -31,13 +32,18 @@ public class WifiEnvironment implements MDP<WifiState, Integer, DiscreteSpace> {
     }
 
     @Override
-    public DiscreteSpace getActionSpace() {
+    public CustomActionSpace getActionSpace() {
         return actionSpace;
     }
 
     @Override
     public WifiState reset() {
-        return game.initialize();
+        try {
+            return game.initialize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -45,12 +51,11 @@ public class WifiEnvironment implements MDP<WifiState, Integer, DiscreteSpace> {
     }
 
     @Override
-    public StepReply<WifiState> step(final Integer actionIndex) {
+    public StepReply<WifiState> step(final int[] actionIndex) {
         // Find action based on action index
-        final ActionChannel actionToTake = ActionChannel.getCurrentAction(actionIndex);
 
         // Change direction based on action and move the snake in that direction
-        double reward = game.changeChannelOfStation(actionToTake);
+        double reward = game.changeChannelOfStation(actionIndex);
 
         // Get current state
         final WifiState observation = game.getObservation();
@@ -68,8 +73,12 @@ public class WifiEnvironment implements MDP<WifiState, Integer, DiscreteSpace> {
     }
 
     @Override
-    public MDP<WifiState, Integer, DiscreteSpace> newInstance() {
-        game.initialize();
+    public MDP<WifiState, int[], CustomActionSpace> newInstance() {
+        try {
+            game.initialize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new WifiEnvironment(game);
     }
 }

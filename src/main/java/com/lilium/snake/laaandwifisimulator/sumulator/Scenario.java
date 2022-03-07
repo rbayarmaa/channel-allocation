@@ -50,7 +50,7 @@ public class Scenario {
         _data.loopEnd();
     }
 
-    public void startSimulationDQN(ActionChannel actionChannel) throws IOException {
+    public void startSimulationDQN(int[] actionChannel) throws IOException {
 
         // 各最小エリアで、WiFiのみユーザ, WiFi + LTEUユーザの最初の発生
 
@@ -100,7 +100,7 @@ public class Scenario {
         }
     }
 
-    private void createFirstEventOfDQN(ActionChannel actionChannel) {
+    private void createFirstEventOfDQN(int[] actionChannel) {
         double time = _queue.getCurrentTime() + _param.interval_time;
         Event next_event = new EventOfDQN(time, this, actionChannel);
         _queue.add(next_event);

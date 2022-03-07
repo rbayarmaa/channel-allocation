@@ -26,14 +26,14 @@ public class EventOfDQN extends Event {
 
     private final WiFiAP _wifi_ap[];
     private final LTEUBS _lteu_bs[];
-    private final ActionChannel _actionChannel;
+    private final int[] _actionChannel;
     CheckInterference ci;
     Random rn;
 
     int wifi_num; // LTE+WiFiユーザのうち、WiFiにつないでいたユーザ数
     int lte_num; // LTE+WiFiユーザのうち、LTE-Uにつないでいたユーザ数
 
-    public EventOfDQN(double time, Scenario scenario, ActionChannel actionChannel) {
+    public EventOfDQN(double time, Scenario scenario, int[] actionChannel) {
         super(scenario);
         this.event_time = time;
         _wifi_ap = _area.getWiFiAP();
