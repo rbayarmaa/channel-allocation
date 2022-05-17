@@ -53,13 +53,14 @@ public class Scenario {
     public void startSimulationDQN(ActionChannel actionChannel) throws IOException {
 
         // 各最小エリアで、WiFiのみユーザ, WiFi + LTEUユーザの最初の発生
-        createFirstWiFiUserArrivalEvents();
-        createFirstLTEUUserArrivalEvents();
 
         // createFirstWiFiUserArrivalEvents2();
         // createFirstLTEUUserArrivalEvents2();
         /* 提案手法,比較手法の最初の発生イベント */
         // creatFirstEventOfGenericAlgorithm6();
+
+        createFirstWiFiUserArrivalEvents();
+        createFirstLTEUUserArrivalEvents();
         if (actionChannel != null) {
             createFirstEventOfDQN(actionChannel);
         }

@@ -22,17 +22,19 @@ public final class WiFiNetworkUtil {
      * Number of neural network inputs.
      */
     public static final int NUMBER_OF_INPUTS = (Constants.WiFi_NUM + Constants.LTEU_NUM) * 7;
-
+    /**
+     * end observation-ii max, min utgiig todorhoilj uguh shaardlagagui yu? Jishee ni APID=0 or 107
+     */
     private WiFiNetworkUtil() {
     }
 
     public static QLearningConfiguration buildConfig() {
         return QLearningConfiguration.builder()
-                .seed(123L)
-                .maxEpochStep(200)
+                .seed((long) ((Constants.WiFi_NUM + Constants.LTEU_NUM) * 4))
+                .maxEpochStep(Constants.WiFi_NUM + Constants.LTEU_NUM)
                 .maxStep(15000)
                 .expRepMaxSize(150000)
-                .batchSize(128)
+                .batchSize(32)
                 .targetDqnUpdateFreq(500)
                 .updateStart(10)
                 .rewardFactor(0.01)
@@ -47,7 +49,7 @@ public final class WiFiNetworkUtil {
     public static DQNFactoryStdDense buildDQNFactory() {
         final DQNDenseNetworkConfiguration build = DQNDenseNetworkConfiguration.builder()
                 .l2(0.001)
-                .updater(new RmsProp(0.000025))
+                .updater(new RmsProp(0.00025)) //0.000025 bsan
                 .numHiddenNodes(300)
                 .numLayers(2)
                 .build();

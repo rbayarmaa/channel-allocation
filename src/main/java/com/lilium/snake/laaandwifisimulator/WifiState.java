@@ -26,9 +26,10 @@ public class WifiState  implements Encodable {
     }
 
     public INDArray getMatrix() {
-        return Nd4j.create(new double[][] {
+        INDArray indArray = Nd4j.create(new double[][]{
                 inputs
         });
+        return indArray;
     }
 
     @Override
